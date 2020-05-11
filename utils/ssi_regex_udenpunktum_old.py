@@ -1,7 +1,9 @@
 import re
 
 def regex(array):
-    """find patterns i text og returner match object"""
+    """find patterns i text og returner match object
+    Version uden punktum i antal testede kolonne
+    """
 
     # REGEX
     # gruppe 1: (\d+) = alle tal
@@ -25,7 +27,7 @@ def regex(array):
         matches_sidste_linie_med_text = re.search(regex_sidste_linie_med_text, array[counter])
 
         if matches_city is not None:
-            # print("matches_city, inde i loop 1. trin. Fjerner: ", array[counter])
+            print("matches_city, inde i loop 1. trin. Fjerner: ", array[counter])
             array.pop(counter)
             # i tilfælde af at der er under 100 tusind indbyggere vil tallet der splittes hernedenunder
             # kun være på fem cifre (i modsætning til de normale seks).
@@ -43,14 +45,14 @@ def regex(array):
         # fjern dato og læg det i variabel til senere brug
         # '46AntalCOVID19tilfældeogtestedeperkommune,opgjortden1.maj2020kl.08.00430Faaborg-Midtfyn1.680'
         elif matches_linie_med_dato is not None:
-            # print("matches_linie_med_dato, inde i loop 1. trin. Fjerner: ", array[counter])
+            print("matches_linie_med_dato, inde i loop 1. trin. Fjerner: ", array[counter])
             array.pop(counter)
             smittede_fra_sidste_by= matches_linie_med_dato.group(1)
             array.insert(counter+0, smittede_fra_sidste_by)  # 46
 
             # få dato ind i variabel til senere brug
             opgjort_dato = matches_linie_med_dato.group(2) # 1.maj2020kl.08.00
-            # print("\nData opgjort d.: ", opgjort_dato)
+            print("\nData opgjort d.: ", opgjort_dato)
 
             id=matches_linie_med_dato.group(3)      # 430
             array.insert(counter+1, id)                     
@@ -65,7 +67,7 @@ def regex(array):
             matches_linie_med_dato= None
 
         elif matches_sidste_linie_med_text is not None:
-            # print("matches_sidste_linie_med_text, inde i loop 1. trin. Fjerner: ", array[counter])
+            print("matches_sidste_linie_med_text, inde i loop 1. trin. Fjerner: ", array[counter])
             array.pop(counter)
             smittede_fra_sidste_by= matches_sidste_linie_med_text.group(1)
             array.insert(counter+0, smittede_fra_sidste_by)  # 46
@@ -77,7 +79,7 @@ def regex(array):
             counter+=1
 
         list_len = len(array)
-        # print("counter, list_len", counter, list_len)
+        print("counter, list_len", counter, list_len)
 
     while("" in array) : 
         array.remove("") 
