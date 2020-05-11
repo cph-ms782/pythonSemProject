@@ -17,3 +17,60 @@ g4.299
 
 
 Antal-covid19-tilfaelde-per-kommune-05052020-s0l0.pdf
+part 1 -- Kommune(id)Kommune
+(navn)Antal
+testedeAntalCOVID19tilfældeBefolkningKumulativincidens(per100.000indbyggere)101København327901963623.404
+
+315147Frederiksberg5285361103.960
+
+347155Dragør6492914.270
+
+
+
+Antal-covid19-tilfaelde-per-kommune-27032020-fg23.pdf
+part 1 -- Kommune (id)
+Kommune (navn)
+Antal COVID-
+19-tilfælde
+ Befolkning 
+Kumulativ incidens (per 
+100.000 indbyggere)
+101
+København
+368
+623.404
+                   
+ 
+59,0
+147
+Frederiksberg
+82
+103.960
+
+
+
+Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf
+part 1 -- Kommune (id)
+Kommune (navn)
+Antal testede
+Antal COVID-19-
+tilfælde
+ Befolkning 
+Kumulativ incidens 
+(per 100.000 
+indbyggere)
+101
+København
+20.126
+              
+ 
+1.707
+                     
+ 
+623.404
+         
+ 
+274
+147
+Frederiksberg
+3.353
