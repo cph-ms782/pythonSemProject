@@ -1,0 +1,19 @@
+ssi_test.pdf
+part 1 -- Kommune(id)Kommune
+(navn)Antal
+testedeAntalCOVID19tilfældeBefolkningKumulativincidens(per100.000indbyggere)101København26.334
+
+1.867
+623.404
+299147Frederiksber
+g4.299
+338
+103.960
+325155Dragør509
+
+28
+14.270
+196185Tårnby1.683
+
+
+Antal-covid19-tilfaelde-per-kommune-05052020-s0l0.pdf

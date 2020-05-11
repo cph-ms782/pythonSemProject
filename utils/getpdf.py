@@ -37,7 +37,7 @@ def read_pdf(address):
     """
 
     # creating a pdf file object
-    pdfFileObj = open("ssi_test.pdf", "rb")
+    pdfFileObj = open(address, "rb")
 
     # creating a pdf reader object
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
@@ -72,8 +72,8 @@ def regex(text):
     """find patterns i text og returner match object"""
 
 # hent pdf fil fra nettet
-file_path= 'ssi_test.pdf'
-file_path= 'Antal-covid19-tilfaelde-per-kommune-05052020-s0l0.pdf'
+# file_path= './data/ssi_test.pdf'
+file_path= './data/Antal-covid19-tilfaelde-per-kommune-05052020-s0l0.pdf'
 # fetched = data_fetcher(
 #     'https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-01052020-prst', file_path)
 
@@ -202,7 +202,7 @@ print("\npart 1b", array)
 headers =  ['KOMKODE', 'KOMNAVN','Antal testede','Antal COVID‐19 tilfælde','Befolkning','Kumulativ']
 pand = pd.DataFrame(final_list, columns = headers)
 
-print(pand[0:100])
+print(pand[0:34])
 
 # conda install -c plotly plotly=4.6.0
 
