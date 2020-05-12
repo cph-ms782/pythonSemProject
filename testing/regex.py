@@ -1,15 +1,13 @@
 import re
-test = '67Mote:'
-sidste = '66Note:639COVID19testedeharikkefolkeregisteradresseiDanmark.Note:47COVID19tilfældeharikkefolkeregisteradresseiDanmark.Bemærk:AntalCOVID19tilfældeerikkevistforkommunermedfærreend10COVID19tilfældeafdiskretionshensyniforholdtilpatienterne.'
+# text = 'Nordfyns‐hanssee1.680'
+# text = 'Sdffghfd‐midtfyn1.680'
+text = 'Nordfyns-hanssee1.680'
 
-regex_sidste_linie_med_text = re.compile('^(\d+)Note.+$')
+regex = re.compile(r'([a-zA-ZæøåÆØÅ]+\-{0,1}[a-zA-ZæøåÆØÅ]+)\s{0,3}(\d+.+)')
 
-matches_test = re.search(
-    regex_sidste_linie_med_text, test)
-matches_sidste_linie_med_text = re.search(
-    regex_sidste_linie_med_text, sidste)
+matches = re.search(regex, text)
 
-if matches_test is not None:
-    print(matches_test.group(1))
-if matches_sidste_linie_med_text is not None:
-    print(matches_sidste_linie_med_text.group(1))
+if matches is not None:
+    print(matches.group())
+    print(matches.group(1))
+    print(matches.group(2))

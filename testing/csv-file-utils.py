@@ -1,38 +1,11 @@
-import requests
-
+# importing csv module
 import csv
 import re
 import pandas as pd
 import tabula
 
-def data_fetcher(url, savefile_name):
-    """
-    Henter filer fra nettet. Input url og fil navn
-    TODO Try except så der kan sendes true/false tilbage om download lykkedes
-    """
 
-    response = requests.get(url, savefile_name)
-
-    # get the filename
-    # fname = response.headers['Content-Disposition'].split('=')[1]
-
-    # write content to file
-    if response.ok:  # status_code == 200:
-        with open(savefile_name, 'wb') as f:
-            f.write(response.content)
-    print('-----------------')
-    print('Downloaded and saved to file {}'.format(savefile_name))
-
-    return savefile_name
-
-
-
-
-def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
-    """
-    Tager adressen til en PDF fil som input og sender en pandas dataframe tilbage.
-    Hvis den ikke kan læse PDF filen korrekt, kommer en fejl tekst return
-    """
+def CSVtest(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
 
     # brug tabula til at lave en csv fil der er let at rette i
     tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
@@ -137,3 +110,10 @@ def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml
         print(df)
         
     return df
+
+
+print(CSVtest('./data/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf'))
+# print(CSVtest())
+print(CSVtest('./data/ssi_test.pdf'))
+print(CSVtest('./data/Antal-covid19-tilfaelde-per-kommune-27032020-fg23.pdf'))
+print(CSVtest('./data/Antal-covid19-tilfaelde-per-kommune-05052020-s0l0.pdf'))
