@@ -7,7 +7,7 @@ import tabula
 
 def data_fetcher(url, savefile_name):
     """
-    Henter filer fra nettet. Input url og fil navn
+    Henter filer fra nettet. Input url og fil navn der skal gemmes til
     TODO Try except så der kan sendes true/false tilbage om download lykkedes
     """
 
