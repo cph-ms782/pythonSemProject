@@ -4,6 +4,8 @@ import csv
 import re
 import pandas as pd
 import tabula
+import sys
+
 
 def data_fetcher(url, savefile_name):
     """
@@ -26,8 +28,6 @@ def data_fetcher(url, savefile_name):
     return savefile_name
 
 
-
-
 def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
     """
     Tager adressen til en PDF fil som input og sender en pandas dataframe tilbage.
@@ -45,9 +45,10 @@ def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml
     # gruppe 1: ([a-zæøåA-ZÆØÅ]+-{0,1}[a-zæøåA-ZÆØÅ]+) = alle bogstaver inkl æøå men ikke . og tal. Kan indeholde et - i midten
     # gruppe 2: ((\d+)(?:\.(\d{1,3}))?) = alle tal og hvis der er et . kommer det også med inkl 3 tal derefter
     # Der kan forekomme mellemrum, så de bliver fjernet ved \s{0,3} og at de ikke kommer med i en gruppe
-    # Og det skal lige nævnes efter timers søgen at i ‐{0,1} er det ikke et chr(45) minus tegn, 
+    # Og det skal lige nævnes efter timers søgen at i ‐{0,1} er det ikke et chr(45) minus tegn,
     # men et chr(8208) minus tegn .... argh :-)
-    regex_city = re.compile(r'([a-zA-ZæøåÆØÅ]+‐{0,1}[a-zA-ZæøåÆØÅ]+)\s{0,3}(\d+.+)')
+    regex_city = re.compile(
+        r'([a-zA-ZæøåÆØÅ]+‐{0,1}[a-zA-ZæøåÆØÅ]+)\s{0,3}(\d+.+)')
 
     # læser csv fil
     with open(file_path+".csv", 'r') as csvfile:
@@ -60,6 +61,34 @@ def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml
         # hiver linie for linie ud af csv reader objektet
         for row in csvreader:
             try:
+                for index, row_val in enumerate(row):
+                    row[index] = row[index].replace("<10 tilfælde", "<10tilfælde")
+                    row[index] = row[index].replace('"', '')
+
+                # hvis tabula ikke finder de rigtige kolonner, kommer der et mellemrum i mellem værdier
+                # så nedenstående splitter på mellemrum (for at undgå <10 tilfælde ikke bliuver splittet)
+                # fjernes mellemrum først
+                if len(row)==2:
+                    new_list = row[0].split(" ")
+                    new_list.append(row[1])
+                    row = new_list
+                if len(row)==3:
+                    new_list = row[0].split(" ")
+                    new_list.append(row[1])
+                    new_list.append(row[2])
+                    row = new_list
+
+                # i starten af pandemien var der ikke tal for antal smittede
+                # ved at indsætte en ny værdi er der det rigtige antal kolonner
+                if len(row)==5:
+                    row.insert( 2, "0")
+                
+                # tabula læser forkert en gang imellem. Hvis der er syv
+                # kolonner er det som regel fordi den har splittet københavns og frederiksbergs
+                # indbyggerantal op i to værdier
+                # if len(row)==7:
+                #     row[4 : 6] = [''.join(row[4 : 6])] 
+
                 # første kolonne skal være tal. Hvis der ikke står et tal
                 # opstår en fejl og hele linien kommer ikke med i den endelige csv fil
                 # den bliver konverteret tilbage igen for at gøre det lettere at fjerne mellemrum nedenunder
@@ -132,8 +161,7 @@ def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml
     # opretter pandas dataframe fra nylig lavet liste
     try:
         df = pd.DataFrame(final_list[1:], columns=headers)
-    except:
-        df = "Der er en fejl i csv fil til pandas dataframe. Sandsynligvis fordi tabula ikke har skannet pdf filen 100% korrekt"
-        print(df)
-        
+    except ValueError as err:
+        df = "ValueError: {0}".format(err)
+
     return df
