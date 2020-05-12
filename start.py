@@ -29,24 +29,24 @@ def henteURL():
 url_liste = henteURL()
 
 # download PDF'er fra URL'er
-# pandas_liste = []
-# for url in url_liste:
-#     filename = url.split("/")[-1]
-#     fullpath = "./data/"+ filename + ".pdf"
-#     if not os.path.exists(fullpath):
-#         data_fetcher(url, fullpath)
+pandas_liste = []
+for url in url_liste:
+    filename = url.split("/")[-1]
+    fullpath = "./data/"+ filename + ".pdf"
+    if not os.path.exists(fullpath):
+        data_fetcher(url, fullpath)
     
-#     # konverter til pandas
-#     result = pdf2pandas(fullpath)
-#     # if not isinstance(result, str):
-#     pandas_liste.append(result)
+    # konverter til pandas
+    result = pdf2pandas(fullpath)
+    # if not isinstance(result, str):
+    pandas_liste.append(result)
 
-# for url, pandas in zip(url_liste, pandas_liste):
-#     print(url)
-#     print(pandas)
+for url, pandas in zip(url_liste, pandas_liste):
+    print(url)
+    print(pandas)
 
-result = pdf2pandas("./data/antal-covid19-tilfaelde-per-kommune-17042020-ph56.pdf")
-print(result)
+# result = pdf2pandas("./data/antal-covid19-tilfaelde-per-kommune-17042020-ph56.pdf")
+# print(result)
 
 
 
