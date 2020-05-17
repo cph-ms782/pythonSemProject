@@ -34,7 +34,7 @@ def multi_download(url_list):
 
 def multi_pdf2pandas(data_folder="./data/download/"):
     """
-    returnerer liste af filename:pandas keypairs for downloadede
+    returnerer dictionary med filename og pandas dataframe som værdier for downloadede
     pdf filer i ./data/download folderen 
     """
 

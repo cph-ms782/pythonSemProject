@@ -36,14 +36,9 @@ multi_download(url_liste)
 pandas_liste = multi_pdf2pandas()
 
 # for at vise fil navn sammen med pandas
-# for url, pandas in zip(url_liste, pandas_liste):
-#     print(url)
-#     print(pandas)
 for pandas in pandas_liste:
     print(pandas)
 
-# result = pdf2pandas("./data/antal-covid19-tilfaelde-per-kommune-17042020-ph56.pdf")
-# print(result)
 
 
 
