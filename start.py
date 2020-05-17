@@ -29,13 +29,10 @@ def henteURL():
 # hent URL'er med PDF
 url_liste = henteURL()
 
-# download PDF'er fra URL'er
+# download PDF'er fra URL'er og lægger dem i data/download folderen
 multi_download(url_liste)
 
 # konverter til pandas
-# result = pdf2pandas(fullpath)
-# if not isinstance(result, str):
-# pandas_liste.append(result)
 pandas_liste = multi_pdf2pandas()
 
 # for at vise fil navn sammen med pandas

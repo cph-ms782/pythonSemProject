@@ -5,13 +5,14 @@ import multiprocessing
 import os
 from os import listdir
 from os.path import isfile, join
+import glob
 
 
 def multi_download(url_list):
     """
     downloader filer fra liste, og returnerer liste af
     filename:pandas keypairs for downloadede pdf filer
-    i ./data/urls folderen 
+    i ./data/download folderen 
     """
 
     workers = 4
@@ -21,7 +22,7 @@ def multi_download(url_list):
         # filenames = [str(y)+".txt" for y in range(len(url_list))]
         for url in url_list:
             filename = url.split("/")[-1]
-            fullpath = "./data/urls/" + filename + ".pdf"
+            fullpath = "./data/download/" + filename + ".pdf"
             if not os.path.exists(fullpath):
                 filenames.append(fullpath)
 
@@ -31,20 +32,31 @@ def multi_download(url_list):
     return filenames
 
 
-def multi_pdf2pandas():
+def multi_pdf2pandas(data_folder="./data/download/"):
     """
     returnerer liste af filename:pandas keypairs for downloadede
-    pdf filer i ./data/urls folderen 
+    pdf filer i ./data/download folderen 
     """
 
     workers = multiprocessing.cpu_count()
-    data_folder = "./data/urls"
 
-    listof_pdf_files_in_urls_folder = ["./data/urls/" + f for f in listdir(
-        data_folder) if isfile(join(data_folder, f))]
+    # laver en liste af pdf filer i pågældende folder
+    listof_pdf_files_in_download_folder = glob.glob(data_folder + "*.pdf")
 
+    # multicore behandling af pdf filer
     with ProcessPoolExecutor(workers) as ex:
-        res = ex.map(pdf2pandas, listof_pdf_files_in_urls_folder)
-    result = dict(zip([filename for filename in listof_pdf_files_in_urls_folder], [
-                  avg for avg in list(res)]))
+        res = ex.map(pdf2pandas, listof_pdf_files_in_download_folder)
+
+    # behandling af resultatet (som er en dict med pandas dataframes liste blandet sammen med filnavne liste )
+    # result = {file, pd for zip([filename for filename in listof_pdf_files_in_download_folder], [
+    #               pd for pd in list(res)])}
+    # result = dict(zip([filename for filename in listof_pdf_files_in_download_folder], [
+    #               pd for pd in list(res)]))
+    filename_pandas = zip([filename for filename in listof_pdf_files_in_download_folder], [
+                  pd for pd in list(res)])
+    # result = dict(zip('file', 'dataframe'), filename_pandas)
+    result = [dict(zip(('file', 'dataframe'), file_dataframe)) for file_dataframe in filename_pandas]
+    # result = dict(zip([filename for filename in listof_pdf_files_in_download_folder], [
+    #               pd for pd in list(res)]))
     return result
+    # return list(res)
