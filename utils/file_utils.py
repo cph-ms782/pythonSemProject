@@ -22,13 +22,15 @@ def data_fetcher(url, savefile_name):
     if response.ok:  # status_code == 200:
         with open(savefile_name, 'wb') as f:
             f.write(response.content)
+    else:
+        print('Kunne ikke downloade filen: ', savefile_name)
     print('-----------------')
     print('Downloaded and saved to file {}'.format(savefile_name))
 
     return savefile_name
 
 
-def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
+def pdf2pandas(file_path="./data/urls/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
     """
     Tager adressen til en PDF fil som input og sender en pandas dataframe tilbage.
     Hvis den ikke kan læse PDF filen korrekt, kommer en fejl tekst return
@@ -85,7 +87,8 @@ def pdf2pandas(file_path="./data/Antal COVID19 tilfaelde per kommune-27042020-ml
                 
                 # tabula læser forkert en gang imellem. Hvis der er syv
                 # kolonner er det som regel fordi den har splittet københavns og frederiksbergs
-                # indbyggerantal op i to værdier
+                # indbyggerantal op i to værdier, men det kan skifte, så nedenstående linier er 
+                # kommenteret ud. 
                 # if len(row)==7:
                 #     row[4 : 6] = [''.join(row[4 : 6])] 
 

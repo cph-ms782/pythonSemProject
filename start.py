@@ -1,4 +1,5 @@
 from utils.file_utils import pdf2pandas, data_fetcher
+from start_utils import multi_download, multi_pdf2pandas
 import os.path
 
 def henteURL():
@@ -29,20 +30,19 @@ def henteURL():
 url_liste = henteURL()
 
 # download PDF'er fra URL'er
-pandas_liste = []
-for url in url_liste:
-    filename = url.split("/")[-1]
-    fullpath = "./data/"+ filename + ".pdf"
-    if not os.path.exists(fullpath):
-        data_fetcher(url, fullpath)
-    
-    # konverter til pandas
-    result = pdf2pandas(fullpath)
-    # if not isinstance(result, str):
-    pandas_liste.append(result)
+multi_download(url_liste)
 
-for url, pandas in zip(url_liste, pandas_liste):
-    print(url)
+# konverter til pandas
+# result = pdf2pandas(fullpath)
+# if not isinstance(result, str):
+# pandas_liste.append(result)
+pandas_liste = multi_pdf2pandas()
+
+# for at vise fil navn sammen med pandas
+# for url, pandas in zip(url_liste, pandas_liste):
+#     print(url)
+#     print(pandas)
+for pandas in pandas_liste:
     print(pandas)
 
 # result = pdf2pandas("./data/antal-covid19-tilfaelde-per-kommune-17042020-ph56.pdf")
