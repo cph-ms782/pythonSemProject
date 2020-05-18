@@ -5,3 +5,5 @@ data_old/
 utils/__pycache__/
 
 __pycache__/
+
+*.csv
