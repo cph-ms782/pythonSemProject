@@ -29,19 +29,32 @@ def data_fetcher(url, savefile_name):
 
     return savefile_name
 
+def pdf_scanner(file_path, scanner="pdfplumber"):
+    """  
+    hvis tabula ikke virker til at skanne pdf prøves med pdfpumber
+    """
+    if scanner == "tabula":
+        try:
+            tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
+        except Exception as exc:
+            print('Exception - Fejl i konvertering af pdf til csv-fil: %s' % (exc))
+            return "Fejl i skriving af csv fil"
 
-def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
+    elif scanner == "pdfplumber":
+        pass
+    else:
+        pass
+
+
+
+def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf", scanner="pdfplumber", verbose=False):
     """
     Tager adressen til en PDF fil som input og sender en pandas dataframe tilbage.
     Hvis den ikke kan læse PDF filen korrekt, kommer en fejl tekst return
     """
 
-    # brug tabula til at lave en csv fil der er let at rette i
-    # try:
-    #     tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
-    # except Exception as exc:
-    #     print('Exception: %s' % (exc))
-    #     return "Fejl i konvertering fra pdf til csv fil"
+    # brug en pdf skanner til at lave en csv fil der er let at rette i
+    pdf_scanner(file_path, scanner)
 
     # init af header og række lister
     rows = []
@@ -57,7 +70,8 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
 
     # læser csv fil
     with open(file_path+".csv", 'r', encoding='utf-8') as csvfile:
-        print("Tester: ", file_path+".csv")
+        if verbose:
+            print("Tester: ", file_path+".csv")
 
         # der kan være skanninger der går galt, så hvis csv filen er tom sendes en fejl meddelelse tilbage
         try:
@@ -66,7 +80,8 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
         # hiver første linie ud. Den kan indeholde kolonne navne
             original_fields = next(csvreader)
         except Exception as exc:
-            print('Exception - Fejl i læsning af csv fil: %s' % (exc))
+            if verbose:
+                print('Exception - Fejl i læsning af csv fil: %s' % (exc))
             return "Fejl i læsning af csv fil"
 
         # hiver linie for linie ud af csv reader objektet
@@ -105,7 +120,7 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
                 # første kolonne skal være tal. Hvis der ikke står et tal
                 # opstår en fejl og hele linien kommer ikke med i den endelige csv fil
                 # den bliver konverteret tilbage igen for at gøre det lettere at fjerne mellemrum nedenunder
-                row[0] = str(int(row[0]))
+                row[0] = "0" + str(int(row[0]))
 
                 # anden kolonne kan have fejl i sig
                 # 430,Faaborg‐Midtfyn1.680,3 1,51.809,60
@@ -139,10 +154,12 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
 
                     rows.append(row)
             except:
-                print("Forkert type data fjernet fra dataset: ", row)
+                if verbose:
+                    print("Forkert type data fjernet fra dataset: ", row)
 
         # totale antal rækker før oprensning
-        print("Totalt antal rækker før oprens: %d" % (csvreader.line_num))
+        if verbose:
+            print("Totalt antal rækker før oprens: %d" % (csvreader.line_num))
 
         # opret ny liste til brug til csv fil og pandas
         final_list = []
@@ -155,14 +172,15 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
                 original_fields[0] = int(original_fields[0])
                 final_list.append(original_fields)
             except:
-                print(
-                    "original header indeholder ikke data, så den kommer ikke med i listen: ", original_fields)
+                if verbose:
+                    print("original header indeholder ikke data, så den kommer ikke med i listen: ", original_fields)
         else:
             final_list.append(headers)
 
         final_list += rows
 
-        print("Totalt antal rækker efter oprens: %d" % (len(final_list)))
+        if verbose:
+            print("Totalt antal rækker efter oprens: %d" % (len(final_list)))
 
     with open(file_path + "_cleaned.csv", 'w', encoding='utf-8') as csvfile:
         # skaber csv writer object
@@ -172,7 +190,8 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
         try:
             csvwriter.writerows(final_list)
         except Exception as exc:
-            print('Exception - Fejl i skriving af csv fil: %s' % (exc))
+            if verbose:
+                print('Exception - Fejl i skriving af csv fil: %s' % (exc))
             return "Fejl i skriving af csv fil"
 
     # opretter pandas dataframe fra nylig lavet liste
