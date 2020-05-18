@@ -4,9 +4,6 @@
 ##### importing required modules
 pip install --no-cache-dir tabula-py numpy requests pandas
 pip install pdfplumber
-pip install PyPDF4
-pip install camelot-py[cv]
-pip install docopt==0.6.2
 
 #### For tabula-py windows 10 brugere
 
