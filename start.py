@@ -1,5 +1,5 @@
 from utils.file_utils import pdf2pandas, data_fetcher
-from start_utils import multi_download, multi_pdf2pandas
+from start_utils import multi_download, multi_pdf2pandas, single_pdf2pandas
 from webScraping import webScraping
 import os.path
 
@@ -10,8 +10,11 @@ url_liste = webScraping.webscraping()
 # download PDF'er fra URL'er og lægger dem i data/download folderen
 multi_download(url_liste)
 
-# konverter til pandas
-pandas_liste = multi_pdf2pandas()
+# konverter til pandas multiprocessing
+# pandas_liste = multi_pdf2pandas()
+
+# konverter til pandas single process
+pandas_liste = single_pdf2pandas()
 
 # for at vise fil navn sammen med pandas
 for pandas in pandas_liste:
