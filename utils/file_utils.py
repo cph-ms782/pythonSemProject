@@ -62,7 +62,8 @@ def manuel_skanning(file_path, verbose=False):
         for page in pdf.pages:
             text = page.extract_text()
             for line in text.split("\n"):
-                print(line)
+                if verbose:
+                    print(line)
                 line = line.replace("\xa0", "").split(" ")
                 text_lines.append(line)
 
