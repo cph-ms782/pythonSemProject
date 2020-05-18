@@ -37,11 +37,11 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
     """
 
     # brug tabula til at lave en csv fil der er let at rette i
-    try:
-        tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
-    except Exception as exc:
-        print('Exception: %s' % (exc))
-        return "Fejl i konvertering fra pdf til csv fil"
+    # try:
+        # tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
+    # except Exception as exc:
+    #     print('Exception: %s' % (exc))
+    #     return "Fejl i konvertering fra pdf til csv fil"
         
 
     # init af header og række lister
