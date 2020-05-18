@@ -14,6 +14,4 @@ def webscraping():
         link_list.append(link.get('href'))
     return link_list
 
-print(webscraping())
-
 

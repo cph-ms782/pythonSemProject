@@ -1,7 +1,7 @@
 import pdfplumber
-from pandas import pd
+import pandas as pd
 
-file = "test.pdf"
+file = "./testing/test.pdf"
 
 with pdfplumber.open(file) as pdf:
     pages= pdf.pages

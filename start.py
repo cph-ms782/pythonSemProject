@@ -2,64 +2,69 @@ from utils.file_utils import pdf2pandas, data_fetcher
 from start_utils import multi_download, multi_pdf2pandas, single_pdf2pandas
 from webScraping import webScraping
 import os.path
+import sys
+import sys
+import getopt
+
+def usage():
+    return """
+    Usage :
+    –h or --help --name: denne hjælpe tekst
+    -m or --multi: Benyt multi-core til at konvertere. Virker ikke på Windows. Standard er single
+    -t or --tabula: Benyt tabula-py til at skanne pdf filer med. Standard er pdfplumber
+    -v or --verbose: Alt bliver printet ud
+    """
 
 
-# hent URL'er med PDF
-url_liste = webScraping.webscraping()
+def run(arguments):
+    try:
+        opts, args = getopt.getopt(arguments, "hmtv", ["help", "multi", "tabula"])
+    except getopt.GetoptError as err:
+        # print help information and exit:
+        print(err)  # will print something like "option -a not recognized"
+        usage()
+        sys.exit(2)
 
-# download PDF'er fra URL'er og lægger dem i data/download folderen
-multi_download(url_liste)
+    output = None
+    verbose = False
+    scanner="pdfplumber"
+    process="single"
 
-# konverter til pandas multiprocessing
-# pandas_liste = multi_pdf2pandas()
+    for option, argument in opts:
+        if option in ("-v", "--verbose"):
+            print(option)
+            verbose = True
+        elif option in ("-h", "--help"):
+            print(usage())
+            sys.exit(2)
+        elif option in ("-m", "--multi"):
+            process = "multi"
+        elif option in ("-t", "--tabula"):
+            scanner = "tabula"
 
-# konverter til pandas single process
-pandas_liste = single_pdf2pandas()
+        else:
+            assert False, "kan ikke genkende option"
 
-# for at vise fil navn sammen med pandas
-for pandas in pandas_liste:
-    print(pandas)
+    
+    # hent URL'er med PDF
+    url_liste = webScraping.webscraping()
+
+    # download PDF'er fra URL'er og lægger dem i data/download folderen
+    print("verbose:", verbose)
+    multi_download(url_liste, verbose)
+
+    if process=="multi":
+        # konverter til pandas multiprocessing
+        pandas_liste = multi_pdf2pandas(scanner, verbose)
+    else:
+        # konverter til pandas single process
+        pandas_liste = single_pdf2pandas(scanner, verbose)
+
+    # for at vise fil navn sammen med pandas
+    for pandas in pandas_liste:
+        print(pandas)
 
 
+if __name__ == "__main__" :
+    run(sys.argv[1:])
 
-
-
-# problem skanninger i filer
-"""
-https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-17042020-ph56
-ValueError: 6 columns passed, passed data had 7 columns
-
-https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-21042020-gt78
-ValueError: 6 columns passed, passed data had 7 columns
-
-https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-28042020-gg64
-ValueError: 6 columns passed, passed data had 7 columns
-
-https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-30042020-vf49
-ValueError: 6 columns passed, passed data had 7 columns
-
-"""
-
-# def henteURL():
-#     """
-#     manuelt hentede URL'er. Skal udskiftes med automatik
-#     """
-
-#     return [
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-27032020-fg23",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-03042020-2-ru34",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-10042020-2-ud79",
-#         "https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-17042020-ph56",
-#         "https://files.ssi.dk/Antal%20COVID19%20tilfaelde%20per%20kommune-20042020-dd09",
-#         "https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-21042020-gt78",
-#         "https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-22042020-po90",
-#         "https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-23042020-bnl4",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-24042020-wr59",
-#         "https://files.ssi.dk/Antal%20COVID19%20tilfaelde%20per%20kommune-27042020-ml09",
-#         "https://files.ssi.dk/antal-covid19-tilfaelde-per-kommune-28042020-gg64",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-29042020-ut65",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-30042020-vf49",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-01052020-prst",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-04052020-sl67",
-#         "https://files.ssi.dk/Antal-covid19-tilfaelde-per-kommune-05052020-s0l0"
-#     ]
