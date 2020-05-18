@@ -37,10 +37,13 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
     """
 
     # brug tabula til at lave en csv fil der er let at rette i
-    tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
+    try:
+        tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
+    except:
+       return "Fejl i konvertering fra pdf til csv fil"
+        
 
     # init af header og række lister
-    fields = []
     rows = []
 
     # REGEX
@@ -54,6 +57,8 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
 
     # læser csv fil
     with open(file_path+".csv", 'r') as csvfile:
+        print("Tester: ", file_path+".csv")
+
         # laver et csv reader objekt
         csvreader = csv.reader(csvfile)
 

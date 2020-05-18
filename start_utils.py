@@ -18,12 +18,13 @@ def multi_download(url_list):
     workers = 4
     with ThreadPoolExecutor(workers) as ex:
         urls = [url_list[x] for x in range(len(url_list))]
+        
         filenames = []
-        # filenames = [str(y)+".txt" for y in range(len(url_list))]
+
         for url in url_list:
             filename = url.split("/")[-1]
             fullpath = "./data/download/" + filename + ".pdf"
-            if not os.path.exists(fullpath):
+            if not os.path.exists(fullpath) and filename[0:5].lower()=="antal":
                 filenames.append(fullpath)
 
         # multithreaded download af pdf filer
@@ -48,15 +49,12 @@ def multi_pdf2pandas(data_folder="./data/download/"):
         res = ex.map(pdf2pandas, listof_pdf_files_in_download_folder)
 
     # behandling af resultatet (som er en dict med pandas dataframes liste blandet sammen med filnavne liste )
-    # result = {file, pd for zip([filename for filename in listof_pdf_files_in_download_folder], [
-    #               pd for pd in list(res)])}
-    # result = dict(zip([filename for filename in listof_pdf_files_in_download_folder], [
-    #               pd for pd in list(res)]))
     filename_pandas = zip([filename for filename in listof_pdf_files_in_download_folder], [
                   pd for pd in list(res)])
+
     # result = dict(zip('file', 'dataframe'), filename_pandas)
     result = [dict(zip(('file', 'dataframe'), file_dataframe)) for file_dataframe in filename_pandas]
     # result = dict(zip([filename for filename in listof_pdf_files_in_download_folder], [
     #               pd for pd in list(res)]))
+
     return result
-    # return list(res)

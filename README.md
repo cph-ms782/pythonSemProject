@@ -2,4 +2,6 @@
 
 
 ##### importing required modules
-conda install PyPDF2 requests pandas tabula-py
+conda install requests pandas
+
+pip install tabula-py PyPDF2
