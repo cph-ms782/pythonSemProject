@@ -5,6 +5,7 @@ import re
 import pandas as pd
 import tabula
 import sys
+import pdfplumber
 
 
 def data_fetcher(url, savefile_name):
@@ -29,7 +30,7 @@ def data_fetcher(url, savefile_name):
 
     return savefile_name
 
-def pdf_scanner(file_path, scanner="pdfplumber"):
+def pdf_scanner(file_path, scanner="pdfplumber", verbose=False):
     """  
     hvis tabula ikke virker til at skanne pdf prøves med pdfpumber
     """
@@ -37,14 +38,46 @@ def pdf_scanner(file_path, scanner="pdfplumber"):
         try:
             tabula.convert_into(file_path, file_path+".csv", all=True, pages='all')
         except Exception as exc:
-            print('Exception - Fejl i konvertering af pdf til csv-fil: %s' % (exc))
-            return "Fejl i skriving af csv fil"
+            if verbose:
+                print('Exception - Fejl i konvertering af pdf til csv-fil (pdfplumber): %s' % (exc))
+            return "Fejl i tabula skriving af csv fil"
 
-    elif scanner == "pdfplumber":
-        pass
     else:
-        pass
+        try:
+            manuel_skanning(file_path, verbose )
+        except Exception as exc:
+            if verbose:
+                print('Exception - Fejl i konvertering af pdf til csv-fil (pdfplumber): %s' % (exc))
+            return "Fejl i manuel skriving af csv fil"
 
+
+def manuel_skanning(file_path, verbose=False):
+    """bruger pdfplumber til at skanne"""
+
+    # opret fil med tekst
+    text_lines = []
+    with pdfplumber.open(file_path) as pdf:
+        pages= pdf.pages
+        
+        for page in pdf.pages:
+            text = page.extract_text()
+            for line in text.split("\n"):
+                print(line)
+                line = line.replace("\xa0", "").split(" ")
+                text_lines.append(line)
+
+
+    # skriv til fil
+    with open(file_path + ".csv", 'w', encoding='utf-8') as csvfile:
+            # skaber csv writer object
+            csvwriter = csv.writer(csvfile)
+
+            # skriver data til csv fil
+            try:
+                csvwriter.writerows(text_lines)
+            except Exception as exc:
+                if verbose:
+                    print('Exception - Fejl i skriving af csv fil: %s' % (exc))
 
 
 def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf", scanner="pdfplumber", verbose=False):
@@ -54,7 +87,7 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
     """
 
     # brug en pdf skanner til at lave en csv fil der er let at rette i
-    pdf_scanner(file_path, scanner)
+    pdf_scanner(file_path, scanner, verbose)
 
     # init af header og række lister
     rows = []
