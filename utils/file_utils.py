@@ -1,5 +1,5 @@
 import requests
-
+import json
 import csv
 import re
 import pandas as pd
@@ -86,6 +86,12 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
     Tager adressen til en PDF fil som input og sender en pandas dataframe tilbage.
     Hvis den ikke kan læse PDF filen korrekt, kommer en fejl tekst return
     """
+
+    # opret json object af kommuner og hvor mange gange de skal fremgå i endelig pandas
+    # bruges nederst i functionen
+    with open("./data/KomkodeAntal_linjer.json", "r") as read_file:
+        kom_data = json.load(read_file)
+        # print(data)
 
     # brug en pdf skanner til at lave en csv fil der er let at rette i
     pdf_scanner(file_path, scanner, verbose)
@@ -179,14 +185,18 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
                                 temp.append(row_val.replace(" ", ""))
 
                         # den opbyggede liste lægges ind rows
-                        rows.append(temp)
+                        # rows.append(temp)
+                        row=temp
                         matches_city = None
                     else:
                         # der er ikke fundet en fejl og rækken lægges ind i listen som den er
                         # dog fjernes mellemrum, der kan snige sig ind i tallene
                         for index, row_val in enumerate(row):
                             row[index] = row_val.replace(" ", "")
-
+                        
+                    # hvor mange gange den pågældende række skal forekomme i dataset
+                    # aflæses af kom_data som blev indlæst øverst i functionen
+                    for target_list in range(kom_data[row[0]]):
                         rows.append(row)
                 except:
                     if verbose:
@@ -232,6 +242,7 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
         # opretter pandas dataframe fra nylig lavet liste
         try:
             df = pd.DataFrame(final_list[1:], columns=headers)
+            df.sort_values(by=['KOMNAVN'], inplace=True)
         except ValueError as err:
             df = "ValueError: {0}".format(err)
 
