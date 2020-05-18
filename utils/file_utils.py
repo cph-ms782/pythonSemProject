@@ -42,7 +42,6 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
     # except Exception as exc:
     #     print('Exception: %s' % (exc))
     #     return "Fejl i konvertering fra pdf til csv fil"
-        
 
     # init af header og række lister
     rows = []
@@ -57,12 +56,12 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
         r'([a-zA-ZæøåÆØÅ]+‐{0,1}[a-zA-ZæøåÆØÅ]+)\s{0,3}(\d+.+)')
 
     # læser csv fil
-    with open(file_path+".csv", 'r') as csvfile:
+    with open(file_path+".csv", 'r', encoding='utf-8') as csvfile:
         print("Tester: ", file_path+".csv")
 
-        # der kan være skanninger der går galt, så hvis csv filen er tom sendes en fejl meddelelse tilbage  
+        # der kan være skanninger der går galt, så hvis csv filen er tom sendes en fejl meddelelse tilbage
         try:
-        # laver et csv reader objekt
+            # laver et csv reader objekt
             csvreader = csv.reader(csvfile)
         # hiver første linie ud. Den kan indeholde kolonne navne
             original_fields = next(csvreader)
@@ -70,22 +69,22 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
             print('Exception - Fejl i læsning af csv fil: %s' % (exc))
             return "Fejl i læsning af csv fil"
 
-
         # hiver linie for linie ud af csv reader objektet
         for row in csvreader:
             try:
                 for index, row_val in enumerate(row):
-                    row[index] = row[index].replace("<10 tilfælde", "<10tilfælde")
+                    row[index] = row[index].replace(
+                        "<10 tilfælde", "<10tilfælde")
                     row[index] = row[index].replace('"', '')
 
                 # hvis tabula ikke finder de rigtige kolonner, kommer der et mellemrum i mellem værdier
                 # så nedenstående splitter på mellemrum (for at undgå <10 tilfælde ikke bliuver splittet)
                 # fjernes mellemrum først
-                if len(row)==2:
+                if len(row) == 2:
                     new_list = row[0].split(" ")
                     new_list.append(row[1])
                     row = new_list
-                if len(row)==3:
+                if len(row) == 3:
                     new_list = row[0].split(" ")
                     new_list.append(row[1])
                     new_list.append(row[2])
@@ -93,15 +92,15 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
 
                 # i starten af pandemien var der ikke tal for antal smittede
                 # ved at indsætte en ny værdi er der det rigtige antal kolonner
-                if len(row)==5:
-                    row.insert( 2, "0")
-                
+                if len(row) == 5:
+                    row.insert(2, "0")
+
                 # tabula læser forkert en gang imellem. Hvis der er syv
                 # kolonner er det som regel fordi den har splittet københavns og frederiksbergs
-                # indbyggerantal op i to værdier, men det kan skifte, så nedenstående linier er 
-                # kommenteret ud. 
+                # indbyggerantal op i to værdier, men det kan skifte, så nedenstående linier er
+                # kommenteret ud.
                 # if len(row)==7:
-                #     row[4 : 6] = [''.join(row[4 : 6])] 
+                #     row[4 : 6] = [''.join(row[4 : 6])]
 
                 # første kolonne skal være tal. Hvis der ikke står et tal
                 # opstår en fejl og hele linien kommer ikke med i den endelige csv fil
@@ -165,7 +164,7 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
 
         print("Totalt antal rækker efter oprens: %d" % (len(final_list)))
 
-    with open(file_path + "_cleaned.csv", 'w') as csvfile:
+    with open(file_path + "_cleaned.csv", 'w', encoding='utf-8') as csvfile:
         # skaber csv writer object
         csvwriter = csv.writer(csvfile)
 
