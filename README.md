@@ -5,3 +5,5 @@
 conda install requests pandas
 
 pip install tabula-py PyPDF2
+
+pip install multiprocess
