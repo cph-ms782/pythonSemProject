@@ -60,15 +60,16 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
     with open(file_path+".csv", 'r') as csvfile:
         print("Tester: ", file_path+".csv")
 
-        # laver et csv reader objekt
+        # der kan være skanninger der går galt, så hvis csv filen er tom sendes en fejl meddelelse tilbage  
         try:
+        # laver et csv reader objekt
             csvreader = csv.reader(csvfile)
+        # hiver første linie ud. Den kan indeholde kolonne navne
             original_fields = next(csvreader)
         except Exception as exc:
-            print('Exception: %s' % (exc))
+            print('Exception - Fejl i læsning af csv fil: %s' % (exc))
             return "Fejl i læsning af csv fil"
 
-        # hiver første linie ud. Den kan indeholde kolonne navne
 
         # hiver linie for linie ud af csv reader objektet
         for row in csvreader:
@@ -169,7 +170,11 @@ def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27
         csvwriter = csv.writer(csvfile)
 
         # skriver data til csv fil
-        csvwriter.writerows(final_list)
+        try:
+            csvwriter.writerows(final_list)
+        except Exception as exc:
+            print('Exception - Fejl i skriving af csv fil: %s' % (exc))
+            return "Fejl i skriving af csv fil"
 
     # opretter pandas dataframe fra nylig lavet liste
     try:
