@@ -1,5 +1,6 @@
 from utils.file_utils import pdf2pandas, data_fetcher
 from start_utils import multi_download, multi_pdf2pandas
+from webScraping import webScraping
 import os.path
 
 def henteURL():
@@ -27,7 +28,7 @@ def henteURL():
     ]
 
 # hent URL'er med PDF
-url_liste = henteURL()
+url_liste = webScraping.webscraping()
 
 # download PDF'er fra URL'er og lægger dem i data/download folderen
 multi_download(url_liste)
