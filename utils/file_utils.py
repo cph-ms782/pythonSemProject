@@ -30,7 +30,7 @@ def data_fetcher(url, savefile_name):
     return savefile_name
 
 
-def pdf2pandas(file_path="./data/urls/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
+def pdf2pandas(file_path="./data/download/Antal COVID19 tilfaelde per kommune-27042020-ml09.pdf"):
     """
     Tager adressen til en PDF fil som input og sender en pandas dataframe tilbage.
     Hvis den ikke kan læse PDF filen korrekt, kommer en fejl tekst return

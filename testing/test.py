@@ -14,12 +14,15 @@ test_list[5: 8] = [''.join(test_list[5: 8])]
 print("The list after merging elements : " + str(test_list))
 
 
-data_folder = "./data/urls"
+data_folder = "./data/download"
 
-# listof_pdf_files_in_urls_folder = [f for f in listdir(
+# listof_pdf_files_in_download_folder = [f for f in listdir(
 #     data_folder) if isfile(join(data_folder, f))]
 
-listof_pdf_files_in_urls_folder = ["./data/urls/" + f for f in listdir(
-    data_folder) if isfile(join(data_folder, f))]
+# listof_pdf_files_in_download_folder = ["./data/download/" + f for f in listdir(
+#     data_folder) if isfile(join(data_folder, f))]
 
-print(listof_pdf_files_in_urls_folder)
+# print(listof_pdf_files_in_download_folder)
+
+import glob
+print(glob.glob("./data/download/*.pdf"))
