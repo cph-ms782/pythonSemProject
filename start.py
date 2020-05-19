@@ -1,5 +1,6 @@
 from utils.file_utils import pdf2pandas, data_fetcher
 from start_utils import multi_download, multi_pdf2pandas, single_pdf2pandas
+from choropleth_builder2 import build as choro
 from webScraping import webScraping
 import os.path
 import sys
@@ -60,9 +61,14 @@ def run(arguments):
         pandas_liste = single_pdf2pandas(scanner, verbose)
 
     # for at vise fil navn sammen med pandas
-    for pandas in pandas_liste:
-        print(pandas)
+    if verbose:
+        for pandas in pandas_liste:
+            print(pandas)
 
+    # byg choropleth map
+    # print(pandas_liste[0]["dataframe"])
+    # choro()
+    choro(pandas_liste[0]["dataframe"])
 
 if __name__ == "__main__" :
     run(sys.argv[1:])

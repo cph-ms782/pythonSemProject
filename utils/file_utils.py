@@ -203,8 +203,8 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
                         print("Forkert type data fjernet fra dataset: ", row)
 
             # for ikke at komme i hukommelses problemer på 32 bit
-            del kom_data
-            
+            # del kom_data
+
             # totale antal rækker før oprensning
             if verbose:
                 print("Totalt antal rækker før oprens: %d" % (csvreader.line_num))
