@@ -25,7 +25,6 @@ def run(arguments):
         usage()
         sys.exit(2)
 
-    output = None
     verbose = False
     scanner="pdfplumber"
     process="single"
