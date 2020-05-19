@@ -28,6 +28,7 @@ def data_factory(url, savefile_name):
 url = 'https://api.statbank.dk/v1/data/FOLK1A/CSV?valuePresentation=CodeAndValue&delimiter=Semicolon&OMR%C3%85DE=*&ALDER=*&Tid=2020K2'
 
 data = data_factory(url, "testersen.csv")
+data = data.drop(['000', '084'])
 data = data.drop(labels=range(0,2)) # sletter første to linier data
 data = data[~data.OMRÅDE.str.contains('Region')] # fjerner linier med region
 data = data.sort_values(by='INDHOLD', ascending=False)
