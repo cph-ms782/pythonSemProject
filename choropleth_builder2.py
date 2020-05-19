@@ -32,7 +32,7 @@ def build(df):
     df.insert(0,'ID', range(0, len(df)))
     # print(type(df))
     df2 = copy.deepcopy(df)
-    print("Bygger chorppleth kort i browser. Vent venligst......kan tage lidt tid")
+    print("Bygger choropleth kort i browser. Vent venligst......kan tage lidt tid")
     fig = px.choropleth_mapbox(df2,geojson=counties,locations='ID',
                             color='Antal COVID‐19 tilfælde',
                             mapbox_style="stamen-toner",
