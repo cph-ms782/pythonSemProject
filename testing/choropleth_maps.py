@@ -14,7 +14,7 @@ import plotly.express as px
 fig = px.choropleth(df, geojson=counties, locations='fips', color='unemp',
                            color_continuous_scale="Viridis",
                            range_color=(0, 12),
-                           scope="europe",
+                           scope="usa",
                            
                            labels={'unemp':'unemployment rate'}
                           )

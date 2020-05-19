@@ -22,18 +22,15 @@ def data_factory(url, savefile_name):
         return False
 
 
-
-def save_pandas(pd, savefile_name):
-    # write content to file
-    pd.to_csv(savefile_name, index=False)
-    print('-----------------')
-    print('Downloaded and saved to file {}'.format(savefile_name))
-
-
-
-def kommunealder(url): 
+def kommunealder(url, verbose=True): 
     savefile="./data/kommunedata.csv"
     downloaded = data_factory(url, savefile)
+    if verbose:
+        if downloaded:
+            print("Data hentet fra Dansk Statistik")
+        else:
+            print("Data kunne ikke hentes fra Dansk Statistik. Forsøger med tidligere gemt fil")
+
     try:
         data = pd.read_csv(savefile, delimiter=";")
     except Exception as exc:
@@ -42,7 +39,7 @@ def kommunealder(url):
         return "Fejl i læsning af kommunedata. Kunne ikke hente fil og ingen på disk i download folder"
 
 
-    # data = pd.read_csv("./testersen.csv", delimiter=";")
+    #oprensning af data
     data = data[~data.OMRÅDE.str.contains('000')]
     data = data[~data.OMRÅDE.str.contains('081')]
     data = data[~data.OMRÅDE.str.contains('082')]
