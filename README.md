@@ -2,10 +2,10 @@
 
 
 ##### importing required modules
-pip install --no-cache-dir tabula-py numpy requests pandas
-pip install pdfplumber
+pip install --no-cache-dir tabula-py numpy requests pandas  
+pip install pdfplumber plotly
 
-#### For tabula-py windows 10 brugere
+#### OBS ikke nødvendig mere pga pdfplumber virker godt .... For tabula-py windows 10 brugere
 
  * If you don’t have it already, install Java
  * Try to run example code (replace the appropriate PDF file name).
