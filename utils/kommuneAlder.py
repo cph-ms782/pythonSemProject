@@ -31,19 +31,18 @@ def kommunealder(verbose=True):
     if not os.path.exists(savefile):
         downloaded = data_factory(url, savefile)
     else:
-        try:
-            with open(savefile, 'r', encoding='utf-8') as csvfile:
-                if verbose:
-                    print("Tester: ", savefile)
+        with open(savefile, 'r', encoding='utf-8') as csvfile:
+            if verbose:
+                print("Tester: ", savefile)
 
-                # der kan være skanninger der går galt, så hvis csv filen er tom sendes en fejl meddelelse tilbage
-                try:
-                # laver et csv reader objekt
-                    csvreader = csv.reader(csvfile)
-                except Exception as exc:
-                    if verbose:
-                        print('Exception - Fejl i læsning af csv fil: %s' % (exc))
-                    return "Fejl i læsning af csv fil"
+        # der kan være skanninger der går galt, så hvis csv filen er tom sendes en fejl meddelelse tilbage
+        try:
+        # laver et csv reader objekt
+            csvreader = csv.reader(csvfile)
+        except Exception as exc:
+            if verbose:
+                print('Exception - Fejl i læsning af csv fil: %s' % (exc))
+        return "Fejl i læsning af csv fil"
 
     if verbose:
         if downloaded:
