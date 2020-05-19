@@ -2,26 +2,36 @@ from urllib.request import urlopen
 import json
 import pandas as pd
 import plotly.express as px
-
-with urlopen('https://raw.githubusercontent.com/ok-dk/dagi/master/geojson/kommuner.geojson') as response:
-    counties = json.load(response)
-##Sorts the list of features by the property KOMNAVN
-counties['features'] = sorted(counties['features'],key= lambda i: i['properties']['KOMNAVN'])
+import os
 
 
 
-##Adding id to the properties of the geojson
-count = 0
+def getGeo():
+    with urlopen('https://raw.githubusercontent.com/ok-dk/dagi/master/geojson/kommuner.geojson') as response:
+        counties = json.load(response)
 
-for feature in counties['features']:
-    feature['properties']['ID'] = str(count)
-    count = count +1
+    ##Sorts the list of features by the property KOMNAVN
+    counties['features'] = sorted(counties['features'],key= lambda i: i['properties']['KOMNAVN'])
+    
+    ##Adding id to the properties of the geojson
+    count = 0
 
-## df should be changed to the DataFrame with right data
-df = pd.read_excel('Kommuner.xlsx', dtype={'KOMKODE':str,'KOMNAVN':str, 'ID':str})
+    for feature in counties['features']:
+        feature['properties']['ID'] = str(count)
+        count = count +1
+    return counties
+
+counties = getGeo()
+os.chdir(os.getcwd() + '\\data\\download')
+
+df = pd.read_csv('Antal-covid19-tilfaelde-per-kommune-03042020-2-ru34.pdf_cleaned.csv')
+df.sort_values(by='KOMNAVN',inplace=True)
+df.insert(0,'ID', range(0, len(df)))
+
+
 
 fig = px.choropleth_mapbox(df,geojson=counties,locations='ID',
-                           color='Smittede',
+                           color='Antal COVID‐19 tilfælde',
                            mapbox_style="stamen-toner",
                            featureidkey='properties.ID',
                            color_continuous_scale="rainbow",
