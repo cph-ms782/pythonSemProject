@@ -21,25 +21,25 @@ def getGeo():
         count = count +1
     return counties
 
-counties = getGeo()
-os.chdir(os.getcwd() + '\\data\\download')
+#counties = getGeo()
+#os.chdir(os.getcwd() + '\\data\\download')
 
-df = pd.read_csv('Antal-covid19-tilfaelde-per-kommune-03042020-2-ru34.pdf_cleaned.csv')
-df.sort_values(by='KOMNAVN',inplace=True)
-df.insert(0,'ID', range(0, len(df)))
-
-
-
-fig = px.choropleth_mapbox(df,geojson=counties,locations='ID',
-                           color='Antal COVID‐19 tilfælde',
-                           mapbox_style="stamen-toner",
-                           featureidkey='properties.ID',
-                           color_continuous_scale="rainbow",
-                           hover_name='KOMNAVN',
-                           hover_data={'ID':False},
-                           center = {"lat": 55.9396761,"lon":9.5155848},
-                           zoom=6)
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+#df = pd.read_csv('Antal-covid19-tilfaelde-per-kommune-03042020-2-ru34.pdf_cleaned.csv')
+#df.sort_values(by='KOMNAVN',inplace=True)
+#df.insert(0,'ID', range(0, len(df)))
 
 
-fig.show()
+
+# fig = px.choropleth_mapbox(df,geojson=counties,locations='ID',
+#                            color='Antal COVID‐19 tilfælde',
+#                            mapbox_style="stamen-toner",
+#                            featureidkey='properties.ID',
+#                            color_continuous_scale="rainbow",
+#                            hover_name='KOMNAVN',
+#                            hover_data={'ID':False},
+#                            center = {"lat": 55.9396761,"lon":9.5155848},
+#                            zoom=6)
+# fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+
+# fig.show()
