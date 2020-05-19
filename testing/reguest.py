@@ -25,9 +25,9 @@ def data_factory(url, savefile_name):
 
 # Change (544588-428864)*100/544588 = 21%
 
-url = 'https://api.statbank.dk/v1/data/FOLK1A/CSV?delimiter=Semicolon&OMR%C3%85DE=*&K%C3%98N=TOT&ALDER=IALT&CIVILSTAND=U&Tid=2020K1'
+url = 'https://api.statbank.dk/v1/data/FOLK1A/CSV?valuePresentation=CodeAndValue&delimiter=Semicolon&OMR%C3%85DE=*&ALDER=*&Tid=2020K2'
 
-data = data_factory(url, "fiveBiggestCitiesNotmarried.csv")
+data = data_factory(url, "testersen.csv")
 data = data.drop(labels=range(0,2)) # sletter første to linier data
 data = data[~data.OMRÅDE.str.contains('Region')] # fjerner linier med region
 data = data.sort_values(by='INDHOLD', ascending=False)
