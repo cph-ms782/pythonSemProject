@@ -203,7 +203,10 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
 
                     #FIXME
                     en_komkode = row[0]
-                    alders_fordeling = alders_data[en_komkode]
+                    for a in alders_data:
+                        if a['KOMKODE']==en_komkode:
+                            alders_fordeling=a['ALDER']
+                            row.append(alders_fordeling)
 
                     # hvor mange gange den pågældende række skal forekomme i dataset
                     # aflæses af kom_data som blev indlæst øverst i functionen
@@ -224,7 +227,7 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
             final_list = []
 
             headers = ['KOMKODE', 'KOMNAVN', 'Antal testede',
-                    'Antal COVID‐19 tilfælde', 'Befolkning', 'Kumulativ']
+                    'Antal COVID‐19 tilfælde', 'Befolkning', 'Kumulativ', 'Alders fordeling']
             if original_fields[0] != 'KOMKODE':
                 final_list.append(headers)
                 try:

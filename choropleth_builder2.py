@@ -39,7 +39,7 @@ def build(df):
                             featureidkey='properties.ID',
                             color_continuous_scale="rainbow",
                             hover_name='KOMNAVN',
-                            hover_data={},
+                            hover_data={'Alders fordeling':True},
                             center = {"lat": 55.9396761,"lon":9.5155848},
                             zoom=6)
 
