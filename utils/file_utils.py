@@ -6,6 +6,10 @@ import pandas as pd
 import tabula
 import sys
 import pdfplumber
+from utils.kommuneAlder import kommunealder as k_a
+import os
+from os import listdir
+from os.path import isfile, join
 
 
 def data_fetcher(url, savefile_name):
@@ -87,6 +91,9 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
     Hvis den ikke kan læse PDF filen korrekt, kommer en fejl tekst return
     """
 
+
+    alders_data = k_a(verbose)
+    
     # opret json object af kommuner og hvor mange gange de skal fremgå i endelig pandas
     # bruges nederst i functionen
     with open("./data/KomkodeAntal_linjer.json", "r") as read_file:
@@ -193,7 +200,11 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
                         # dog fjernes mellemrum, der kan snige sig ind i tallene
                         for index, row_val in enumerate(row):
                             row[index] = row_val.replace(" ", "")
-                        
+
+                    #FIXME
+                    en_komkode = row[0]
+                    alders_fordeling = alders_data[en_komkode]
+
                     # hvor mange gange den pågældende række skal forekomme i dataset
                     # aflæses af kom_data som blev indlæst øverst i functionen
                     for target_list in range(kom_data[row[0]]):
