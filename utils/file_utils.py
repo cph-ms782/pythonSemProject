@@ -196,7 +196,7 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
                         
                     # hvor mange gange den pågældende række skal forekomme i dataset
                     # aflæses af kom_data som blev indlæst øverst i functionen
-                    for target_list in range(kom_data[row[0]]):
+                    for target_list in range(1,kom_data[row[0]]):
                         rows.append(row)
                 except:
                     if verbose:
@@ -237,7 +237,7 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
             except Exception as exc:
                 if verbose:
                     print('Exception - Fejl i skriving af csv fil: %s' % (exc))
-                return "Fejl i skriving af csv fil"
+                return "Fejl i skrivning af csv fil"
 
         # opretter pandas dataframe fra nylig lavet liste
         try:
