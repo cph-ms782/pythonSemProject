@@ -7,6 +7,7 @@ import sys
 import sys
 import getopt
 
+
 def usage():
     return """
     Options :
@@ -15,7 +16,7 @@ def usage():
     -t or --tabula: Benyt tabula-py til at skanne pdf filer med. Standard er pdfplumber
     -v or --verbose: Alt bliver printet ud (også pandas)
     -p or --pandas: Print pandas i en terminal. Standard output er choropleth kort i browseren
-    --no-cache: Download alt igen. OBS! Ikke implementeret. Slet i stedet manuelt alt i folderen ./data/download 
+    --no-cache: Download alt igen. OBS! Ikke implementeret. Slet i stedet manuelt alt i folderen ./data/download
 
     Eksempel:
     python start.py         # singlecore. Viser choropleth map i browser
@@ -27,7 +28,8 @@ def usage():
 
 def run(arguments):
     try:
-        opts, args = getopt.getopt(arguments, "hmtvp", ["help", "multi", "tabula", "no-cache", "pandas"])
+        opts, args = getopt.getopt(
+            arguments, "hmtvp", ["help", "multi", "tabula", "no-cache", "pandas"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print(err)  # will print something like "option -a not recognized"
@@ -35,10 +37,10 @@ def run(arguments):
         sys.exit(2)
 
     verbose = False
-    scanner="pdfplumber"
-    process="single"
+    scanner = "pdfplumber"
+    process = "single"
     no_cache = False
-    output= "choro"
+    output = "choro"
 
     for option, argument in opts:
         if option in ("-v", "--verbose"):
@@ -59,7 +61,6 @@ def run(arguments):
         else:
             assert False, "kan ikke genkende option"
 
-    
     # hent URL'er med PDF
     url_liste = webScraping.webscraping()
 
@@ -67,7 +68,7 @@ def run(arguments):
     print("verbose:", verbose)
     multi_download(url_liste, verbose)
 
-    if process=="multi":
+    if process == "multi":
         # konverter til pandas multiprocessing
         pandas_liste = multi_pdf2pandas(scanner, verbose)
     else:
@@ -75,15 +76,36 @@ def run(arguments):
         pandas_liste = single_pdf2pandas(scanner, verbose)
 
     # for at vise fil navn sammen med pandas
-    if output=="pandas" or verbose:
+    if output == "pandas" or verbose:
         for pandas in pandas_liste:
             print(pandas)
 
-    if output=="choro":
+    if output == "choro":
         # byg choropleth map
-        choro(pandas_liste[0]["dataframe"])
+        index = len(pandas_liste)-1
+        print("Checker liste fra neden og op (nyeste dato først), for at se om den er i det rigtige format")
+        while index > 0:
+            if isinstance(pandas_liste[index]["dataframe"], str):
+                print("Streng fundet i data for: ", pandas_liste[index]['file'], ". Tager næste i listen")
+                index -= 1
+            # pandas er fundet men den kan være forkert størrelse
+            elif pandas_liste[index]["dataframe"].size < 311:
+                print("Forkert formet panda dataframe fundet i data for filen: ", pandas_liste[index]['file'], ". Tager næste i listen")
+                index -= 1
+            # hvis fundne værdi ikke er en streng og den er en pandas med størrelse 311 så kan den bruges
+            else:
+                shape = pandas_liste[index]["dataframe"].shape
+                if verbose:
+                    print("shape", shape)
+                if shape[0]==311 and shape[1]==7:
+                    index == 0
+                    choro(pandas_liste[index]["dataframe"])
+                else:
+                    if verbose:
+                        print("Form af dataframe: ", shape)
+                    print("Forkert formet panda dataframe fundet i data for filen: ", pandas_liste[index]['file'], ". Tager næste i listen")
+                    index -= 1
 
 
-if __name__ == "__main__" :
+if __name__ == "__main__":
     run(sys.argv[1:])
-
