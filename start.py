@@ -1,9 +1,9 @@
 from utils.file_utils import pdf2pandas, data_fetcher
 from utils.start_utils import multi_download, multi_pdf2pandas, single_pdf2pandas
 from choropleth_builder2 import build as choro
+# import choro_web
 from webScraping import webScraping
 import os.path
-import sys
 import sys
 import getopt
 
@@ -86,11 +86,13 @@ def run(arguments):
         print("Checker liste fra neden og op (nyeste dato først), for at se om den er i det rigtige format")
         while index > 0:
             if isinstance(pandas_liste[index]["dataframe"], str):
-                print("Streng fundet i data for: ", pandas_liste[index]['file'], ". Tager næste i listen")
+                if verbose:
+                    print("Streng fundet i data for: ", pandas_liste[index]['file'], ". Tager næste i listen")
                 index -= 1
             # pandas er fundet men den kan være forkert størrelse
             elif pandas_liste[index]["dataframe"].size < 311:
-                print("Forkert formet panda dataframe fundet i data for filen: ", pandas_liste[index]['file'], ". Tager næste i listen")
+                if verbose:
+                    print("Forkert formet panda dataframe fundet i data for filen: ", pandas_liste[index]['file'], ". Tager næste i listen")
                 index -= 1
             # hvis fundne værdi ikke er en streng og den er en pandas med størrelse 311 så kan den bruges
             else:
@@ -98,8 +100,11 @@ def run(arguments):
                 if verbose:
                     print("shape", shape)
                 if shape[0]==311 and shape[1]==7:
+                    print("Sender data fra d. ", pandas_liste[index]["date"], " (år/måned/dag) til choropleth map")
                     index == 0
                     choro(pandas_liste[index]["dataframe"])
+                    print("Færdig")
+                    sys.exit(0)
                 else:
                     if verbose:
                         print("Form af dataframe: ", shape)
