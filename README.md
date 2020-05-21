@@ -79,7 +79,7 @@ Presentation
 
 ##### Største udfordringer
   - choropleth map med store dataframes og geojson-filer. Choropleth maps er ikke bugfrit.
-  - PDF konvertering til pandas dataframes. PDF konvertering er 100%
+  - PDF konvertering til pandas dataframes. PDF konvertering er ikke 100% korrekt.
   - Webscraping. Ikke entydige html tags at gå efter.
   - Aggregation af Dansk Statistik data fra dataframe til een tekststreng per kommune
 
