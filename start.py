@@ -1,5 +1,5 @@
 from utils.file_utils import pdf2pandas, data_fetcher
-from start_utils import multi_download, multi_pdf2pandas, single_pdf2pandas
+from utils.start_utils import multi_download, multi_pdf2pandas, single_pdf2pandas
 from choropleth_builder2 import build as choro
 from webScraping import webScraping
 import os.path
@@ -11,15 +11,16 @@ def usage():
     return """
     Usage :
     –h or --help --name: denne hjælpe tekst
-    -m or --multi: Benyt multi-core til at konvertere. Virker ikke på Windows. Standard er single
+    -m or --multi: Benyt multi-core til at konvertere. OBS! Virker ikke på Windows. Standard er single
     -t or --tabula: Benyt tabula-py til at skanne pdf filer med. Standard er pdfplumber
     -v or --verbose: Alt bliver printet ud
+    --no-cache: Download alt igen. OBS! Ikke implementeret. Slet i stedet manuelt alt i folderen ./data/download 
     """
 
 
 def run(arguments):
     try:
-        opts, args = getopt.getopt(arguments, "hmtv", ["help", "multi", "tabula"])
+        opts, args = getopt.getopt(arguments, "hmtv", ["help", "multi", "tabula", "no-cache"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print(err)  # will print something like "option -a not recognized"
@@ -29,6 +30,7 @@ def run(arguments):
     verbose = False
     scanner="pdfplumber"
     process="single"
+    no_cache = False
 
     for option, argument in opts:
         if option in ("-v", "--verbose"):
@@ -41,6 +43,8 @@ def run(arguments):
             process = "multi"
         elif option in ("-t", "--tabula"):
             scanner = "tabula"
+        elif option in ("--no-cache"):
+            no_cache = True
 
         else:
             assert False, "kan ikke genkende option"
