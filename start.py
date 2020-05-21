@@ -9,18 +9,25 @@ import getopt
 
 def usage():
     return """
-    Usage :
+    Options :
     –h or --help --name: denne hjælpe tekst
     -m or --multi: Benyt multi-core til at konvertere. OBS! Virker ikke på Windows. Standard er single
     -t or --tabula: Benyt tabula-py til at skanne pdf filer med. Standard er pdfplumber
-    -v or --verbose: Alt bliver printet ud
+    -v or --verbose: Alt bliver printet ud (også pandas)
+    -p or --pandas: Print pandas i en terminal. Standard output er choropleth kort i browseren
     --no-cache: Download alt igen. OBS! Ikke implementeret. Slet i stedet manuelt alt i folderen ./data/download 
+
+    Eksempel:
+    python start.py         # singlecore. Viser choropleth map i browser
+    python start.py -m      # multicore. Viser choropleth map i browser
+    python start.py -v      # viser al tekst
+    python start.py -v -m   # argumenterne kan kombineres
     """
 
 
 def run(arguments):
     try:
-        opts, args = getopt.getopt(arguments, "hmtv", ["help", "multi", "tabula", "no-cache"])
+        opts, args = getopt.getopt(arguments, "hmtvp", ["help", "multi", "tabula", "no-cache", "pandas"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print(err)  # will print something like "option -a not recognized"
@@ -31,6 +38,7 @@ def run(arguments):
     scanner="pdfplumber"
     process="single"
     no_cache = False
+    output= "choro"
 
     for option, argument in opts:
         if option in ("-v", "--verbose"):
@@ -43,6 +51,8 @@ def run(arguments):
             process = "multi"
         elif option in ("-t", "--tabula"):
             scanner = "tabula"
+        elif option in ("-p", "--pandas"):
+            output = "pandas"
         elif option in ("--no-cache"):
             no_cache = True
 
@@ -65,14 +75,14 @@ def run(arguments):
         pandas_liste = single_pdf2pandas(scanner, verbose)
 
     # for at vise fil navn sammen med pandas
-    if verbose:
+    if output=="pandas" or verbose:
         for pandas in pandas_liste:
             print(pandas)
 
-    # byg choropleth map
-    # print(pandas_liste[0]["dataframe"])
-    # choro()
-    choro(pandas_liste[0]["dataframe"])
+    if output=="choro":
+        # byg choropleth map
+        choro(pandas_liste[0]["dataframe"])
+
 
 if __name__ == "__main__" :
     run(sys.argv[1:])

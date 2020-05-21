@@ -23,9 +23,7 @@ def getGeo():
 
 def build(df):
     counties = getGeo()
-    # os.chdir(os.getcwd() + '/data/download')
 
-    # df = pd.read_csv('./data/download/Antal-covid19-tilfaelde-per-kommune-03042020-2-ru34.pdf_cleaned.csv')
     df.sort_values(by='KOMNAVN',inplace=True)
     df.insert(0,'ID', range(0, len(df)))
     # print(type(df))
