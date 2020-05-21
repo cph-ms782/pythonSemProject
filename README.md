@@ -41,12 +41,13 @@ Valg muligheder :
 
 ##### Teknologier:
 Data collection
+  - API
   - Webscrapping
   - Dataset
   - PDF
   - CSV
   - JSON
-  - CLI options
+  - user input - CLI args
   - multithreaded/multicore
   - pandas
   - generators
@@ -56,12 +57,18 @@ Data wrangling
   - Remove columns/rows
   - Inserting new columns  
   - Regex
+  - Aggregation
+  - Filtering
 
 Presentation
   - plotly choropleth map i browser
   - pandas dataframes i konsol
 
-
+##### Største udfordringer
+  - choropleth map med store dataframes og geojson-filer. Choropleth maps er ikke bugfrit.
+  - PDF konvertering til pandas dataframes. PDF konvertering er 100%
+  - Webscraping. Ikke entydige html tags at gå efter.
+  - Aggregation af Dansk Statistik data fra dataframe til een tekststreng per kommune
 
 
 ##### tabula-py ---- OBS ikke nødvendig mere pga. at pdfplumber virker godt ....
