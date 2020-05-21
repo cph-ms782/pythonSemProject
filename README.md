@@ -17,14 +17,14 @@ se evt. også tabula-py længere nede
 
 Eksempel:  
 
-    python start.py         # singlecore. Viser choropleth map i browser  
-    python start.py -m      # multicore. Viser choropleth map i browser  
-    python start.py -v      # viser al tekst  
-    python start.py -v -m   # argumenterne kan kombineres
+    python start.py         # Viser choropleth map i browser  
+    python start.py -m      # Som ovenstående men med multicore
+    python start.py -v      # Viser al tekst  
+    python start.py -v -m   # Valg muligheder kan kombineres
 
-Options :
+Valg muligheder :
 
-    –h or --help --name: denne hjælpe tekst
+    -h or --help --name: denne hjælpe tekst
     -m or --multi: Benyt multi-core til at konvertere. OBS! Virker ikke på Windows. Standard er single
     -t or --tabula: Benyt tabula-py til at skanne pdf filer med. Standard er pdfplumber
     -v or --verbose: Alt bliver printet ud (også pandas)
