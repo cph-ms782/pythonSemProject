@@ -1,6 +1,6 @@
 # python Semester Project
 
-  ![](./screenDumps/map2.jpg)
+  ![](./screenDumps/map.png)
 
 ### Intro
 Python program til at hente info om Covid-19 smitte hentet fra Statens Serum Institut og
