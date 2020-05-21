@@ -91,7 +91,7 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
     Hvis den ikke kan læse PDF filen korrekt, kommer en fejl tekst return
     """
 
-
+    # henter alders data fra enten fil eller Dansk Statistik
     alders_data = k_a(verbose)
     
     # opret json object af kommuner og hvor mange gange de skal fremgå i endelig pandas
@@ -114,6 +114,7 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
     # men et chr(8208) minus tegn .... argh :-)
     regex_city = re.compile(
         r'([a-zA-ZæøåÆØÅ]+‐{0,1}[a-zA-ZæøåÆØÅ]+)\s{0,3}(\d+.+)')
+
 
     # læser csv fil
     try:
@@ -201,7 +202,7 @@ def pdf2pandas(file_path, scanner="pdfplumber", verbose=False):
                         for index, row_val in enumerate(row):
                             row[index] = row_val.replace(" ", "")
 
-                    #FIXME
+                    # Sætter ekstra kolonne på med aldersfordeling af kommune
                     en_komkode = row[0]
                     for a in alders_data:
                         if a['KOMKODE']==en_komkode:
