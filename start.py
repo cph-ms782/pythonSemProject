@@ -83,33 +83,52 @@ def run(arguments):
     if output == "choro":
         # byg choropleth map
         index = len(pandas_liste)-1
-        print("Checker liste fra neden og op (nyeste dato først), for at se om den er i det rigtige format")
-        while index > 0:
-            if isinstance(pandas_liste[index]["dataframe"], str):
-                if verbose:
-                    print("Streng fundet i data for: ", pandas_liste[index]['file'], ". Tager næste i listen")
-                index -= 1
-            # pandas er fundet men den kan være forkert størrelse
-            elif pandas_liste[index]["dataframe"].size < 311:
-                if verbose:
-                    print("Forkert formet panda dataframe fundet i data for filen: ", pandas_liste[index]['file'], ". Tager næste i listen")
-                index -= 1
-            # hvis fundne værdi ikke er en streng og den er en pandas med størrelse 311 så kan den bruges
-            else:
-                shape = pandas_liste[index]["dataframe"].shape
-                if verbose:
-                    print("shape", shape)
-                if shape[0]==311 and shape[1]==7:
-                    print("Sender data fra d. ", pandas_liste[index]["date"], " (år/måned/dag) til choropleth map")
-                    index == 0
-                    choro(pandas_liste[index]["dataframe"])
+        print("Vælg i dato liste (år-måned-dag)")
+        exit = False
+        while not exit:
+            for idx, emne in enumerate(pandas_liste):
+                print(idx, " - ", emne["date"])
+            chosen_frame = input(
+                "Vælg nummer udfra ønsket dato. Exit med -1 eller bogstav\n")
+            try:
+                chosen_frame = int(chosen_frame)
+                if chosen_frame == -1:
                     print("Færdig")
                     sys.exit(0)
-                else:
-                    if verbose:
-                        print("Form af dataframe: ", shape)
-                    print("Forkert formet panda dataframe fundet i data for filen: ", pandas_liste[index]['file'], ". Tager næste i listen")
+                index = chosen_frame
+                
+                if isinstance(pandas_liste[index]["dataframe"], str):
+                    # if verbose:
+                    print("Streng fundet i data for: ",
+                          pandas_liste[index]['file'], ". Tager næste i listen")
                     index -= 1
+
+                # pandas er fundet men den kan være forkert størrelse
+                elif pandas_liste[index]["dataframe"].size < 311:
+                    # if verbose:
+                    print("Forkert formet panda dataframe fundet i data for filen: ",
+                          pandas_liste[index]['file'], ". Tager næste i listen")
+                    index -= 1
+
+                # hvis fundne værdi ikke er en streng og den er en pandas med størrelse 311 så kan den bruges
+                else:
+                    shape = pandas_liste[index]["dataframe"].shape
+                    if verbose:
+                        print("shape", shape)
+                    if shape[0] == 311 and shape[1] == 7:
+                        print(
+                            "Sender data fra d. ", pandas_liste[index]["date"], " (år/måned/dag) til choropleth map")
+                        index == 0
+                        choro(pandas_liste[index]["dataframe"])
+                    else:
+                        # if verbose:
+                        print("Form af dataframe: ", shape)
+                        print("Forkert formet panda dataframe fundet i data for filen: ",
+                              pandas_liste[index]['file'], ". Tager næste i listen")
+                    index -= 1
+            except:
+                print("Færdig")
+                exit = True
 
 
 if __name__ == "__main__":
