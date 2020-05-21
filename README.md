@@ -2,7 +2,7 @@
 
   ![](./screenDumps/map.png)
 
-Gruppe: unusual ear
+Gruppe: unusual ear  
 Dennis Hansen, CPH-DH153  
 Johan Christian Ryge, CPH-JR221  
 Martin Bøgh Sander-Thomsen, CPH-MS782  
