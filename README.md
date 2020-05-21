@@ -19,7 +19,7 @@ se evt. også tabula-py længere nede
 Eksempel:  
 
     python start.py         # Viser choropleth map i browser  
-    python start.py -m      # Som ovenstående men med multicore
+    python start.py -m      # Som ovenstående men med multicore (OBS virker ikke pt på windows)
     python start.py -v      # Viser al tekst  
     python start.py -v -m   # Valg muligheder kan kombineres
 
