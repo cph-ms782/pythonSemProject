@@ -114,4 +114,7 @@ def single_pdf2pandas(scanner="pdfplumber", verbose=False, data_folder="./data/d
     result = [dict(zip(('file', 'dataframe', 'date'), file_dataframe))
               for file_dataframe in filename_pandas]
 
+    # sorterer liste efter dato
+    result.sort(key=operator.itemgetter('date'))
+
     return result
