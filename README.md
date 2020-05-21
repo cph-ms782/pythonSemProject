@@ -2,6 +2,10 @@
 
   ![](./screenDumps/map.png)
 
+Dennis Hansen, CPH-DH153
+Johan Christian Ryge, CPH-JR221
+Martin Bøgh Sander-Thomsen, CPH-MS782
+
 ### Intro
 Python program til at hente info om Covid-19 smitte hentet fra Statens Serum Institut og
 generel info om kommuner fra Dansk Statistik.  
