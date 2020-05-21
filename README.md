@@ -1,7 +1,8 @@
 # python Semester Project
 
-Python program til at hente info om COVID-19 smitte hentet fra Statens Serum Institut og
+Python program til at hente info om Covid-19 smitte hentet fra Statens Serum Institut og
 generel info om kommuner fra Dansk Statistik.  
+Data vises enten som pandas dataframes i konsollen eller som et plotly choropleth map i browseren. I denne kan man pege på kommuner og se data for denne.
 
 ##### nødvendige moduler  
 pip install requests  
@@ -29,6 +30,13 @@ Options :
     -v or --verbose: Alt bliver printet ud (også pandas)
     -p or --pandas: Print pandas i en terminal. Standard output er choropleth kort i browseren
     --no-cache: Download alt igen. OBS! Ikke implementeret. Slet i stedet manuelt alt i folderen ./data/download
+
+##### Python projekt oplæg
+
+ - Vi vil lave et program der giver et overblik over smittede tilfælde med Covid-19, ved hjælp af et interaktivt kort over Danmark, det kunne være fordelt på kommuner.
+ - Vi håber at kunne lave det sådan, at man kan få vist en graf over den statistiske udvikling af smittede tilfælde i kommunerne.
+ - Derudover kunne det være spændende at indsamle andre data omkring kommunerne og ved hjælp af webscraping få det til at passe med kortet, så det bliver vist på en pæn måde.
+
 
 ##### Teknologier:
 Data collection
