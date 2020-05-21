@@ -1,10 +1,11 @@
 # python Semester Project
 
+### Intro
 Python program til at hente info om Covid-19 smitte hentet fra Statens Serum Institut og
 generel info om kommuner fra Dansk Statistik.  
 Data vises enten som pandas dataframes i konsollen eller som et plotly choropleth map i browseren. I denne kan man pege på kommuner og se data for denne.
 
-##### nødvendige moduler  
+#### nødvendige moduler  
 pip install requests  
 pip install pandas  
 pip install pdfplumber  
