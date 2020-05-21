@@ -7,6 +7,7 @@ from os import listdir
 from os.path import isfile, join
 import glob
 import re
+import operator
 
 
 def multi_download(url_list, verbose=False):
@@ -42,14 +43,17 @@ def find_date(list_files):
     """ returnerer en liste af datoer. Der matcher med listen af filer"""
     # Find dato
     regex_dato = re.compile(
-        r'kommune-(\d+)-')
+        r'kommune-(\d{2})(\d{2})(\d{4})-')
 
     list_dates = []
     for _file in list_files:
         matches_dato = re.search(regex_dato, _file)
         # check for dato
         if matches_dato is not None:
-            list_dates.append(matches_dato.group(1))
+            _day=matches_dato.group(1)
+            _month=matches_dato.group(2)
+            _year=matches_dato.group(3)
+            list_dates.append(_year+_month+_day)
         else:
             list_dates.append("")
 
@@ -80,6 +84,9 @@ def multi_pdf2pandas(scanner="pdfplumber",  verbose=False, data_folder="./data/d
 
     result = [dict(zip(('file', 'dataframe', 'date'), file_dataframe))
               for file_dataframe in filename_pandas]
+
+    # sorterer liste efter dato
+    result.sort(key=operator.itemgetter('date'))
 
     return result
 
