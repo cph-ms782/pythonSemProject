@@ -1,5 +1,7 @@
 # python Semester Project
 
+  ![](./screenDumps/map2.jpg)
+
 ### Intro
 Python program til at hente info om Covid-19 smitte hentet fra Statens Serum Institut og
 generel info om kommuner fra Dansk Statistik.  
@@ -31,6 +33,12 @@ Valg muligheder :
     -v or --verbose: Alt bliver printet ud (også pandas)
     -p or --pandas: Print pandas i en terminal. Standard output er choropleth kort i browseren
     --no-cache: Download alt igen. OBS! Ikke implementeret. Slet i stedet manuelt alt i folderen ./data/download
+
+### Vælg dato
+![](./screenDumps/choseDate.png)
+
+### Hold musen over kommune
+![](./screenDumps/kort2.png)
 
 ##### Python projekt oplæg
 
