@@ -28,6 +28,8 @@ def data_factory(url, savefile_name):
 def kommunealder(verbose=True): 
     url = 'https://api.statbank.dk/v1/data/FOLK1A/CSV?valuePresentation=CodeAndValue&delimiter=Semicolon&OMR%C3%85DE=*&ALDER=*&Tid=2020K2'
     savefile="./data/kommunedata.csv"
+    
+    downloaded=False
     if not os.path.exists(savefile):
         downloaded = data_factory(url, savefile)
 
@@ -35,7 +37,7 @@ def kommunealder(verbose=True):
         if downloaded:
             print("Data hentet fra Dansk Statistik")
         else:
-            print("Data kunne ikke hentes fra Dansk Statistik. Forsøger med tidligere gemt fil")
+            print("Data hentes ikke fra Dansk Statistik. Forsøger med tidligere gemt fil")
 
     try:
         data = pd.read_csv(savefile, delimiter=";")
