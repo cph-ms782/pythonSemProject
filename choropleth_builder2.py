@@ -3,7 +3,6 @@ import json
 import pandas as pd
 import plotly.express as px
 import os
-import copy 
 
 
 def getGeo():
@@ -20,8 +19,7 @@ def getGeo():
         feature['properties']['ID'] = str(count)
         count = count +1
     
-    counties2 = copy.deepcopy(counties)
-    return counties2
+    return counties
 
 def build(df):
     counties = getGeo()
@@ -31,15 +29,14 @@ def build(df):
     df.sort_values(by='KOMNAVN',inplace=True)
     df.insert(0,'ID', range(0, len(df)))
     # print(type(df))
-    df2 = copy.deepcopy(df)
     print("Bygger choropleth kort i browser. Vent venligst......kan tage lidt tid")
-    fig = px.choropleth_mapbox(df2,geojson=counties,locations='ID',
+    fig = px.choropleth_mapbox(df,geojson=counties,locations='ID',
                             color='Antal COVID‐19 tilfælde',
                             mapbox_style="stamen-toner",
                             featureidkey='properties.ID',
                             color_continuous_scale="rainbow",
                             hover_name='KOMNAVN',
-                            hover_data={'Alders fordeling':True},
+                            hover_data={},
                             center = {"lat": 55.9396761,"lon":9.5155848},
                             zoom=6)
 
