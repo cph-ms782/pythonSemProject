@@ -12,14 +12,26 @@ Python program til at hente info om Covid-19 smitte hentet fra Statens Serum Ins
 generel info om kommuner fra Dansk Statistik.  
 Data vises enten som pandas dataframes i konsollen eller som et plotly choropleth map i browseren. I denne kan man pege på kommuner og se data.
 
+### OBS opdatering d. 30/maj
+Pga. SSI har ændret deres side hvor vi webscraper URL'er fra, virker vores program ikke med den side.  
+Derfor har vi været nødsaget til at uploade vores egen side inklusiv PDF filer.  
+Originale side, men info omkring skiftet:  
+[https://www.ssi.dk/aktuelt/sygdomsudbrud/coronavirus/covid-19-i-danmark-epidemiologisk-overvaagningsrapport](https://www.ssi.dk/aktuelt/sygdomsudbrud/coronavirus/covid-19-i-danmark-epidemiologisk-overvaagningsrapport)
+
+Nye mockup side som programmet nu benytter:  
+[https://www.sandersoft.dk/ssi/ssi.html](https://www.sandersoft.dk/ssi/ssi.html)
+
+Dette er godkendt af Thomas  
+
 #### nødvendige moduler  
 pip install requests  
 pip install pandas  
 pip install pdfplumber  
 pip install plotly  
 pip install bs4  
+pip install tabula-py  
 
-se evt. også tabula-py længere nede
+se evt. også angående tabula-py længere nede
 
 ### For at starte
 
